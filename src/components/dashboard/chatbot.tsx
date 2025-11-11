@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { askChatbot, type ChatMessageSchema } from '@/ai/flows/chatbot-flow';
 import { users } from '@/lib/data';
+import type { z } from 'zod';
 
 type ChatMessage = z.infer<typeof ChatMessageSchema>;
 
