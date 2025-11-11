@@ -86,7 +86,7 @@ function AvailableAgentCard({ agent }: { agent: Agent }) {
         <CardDescription>{agent.description}</CardDescription>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Assign & Activate</Button>
+        <Button className="w-full">Assign credit &amp; Activate</Button>
       </CardFooter>
     </Card>
   );
