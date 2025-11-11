@@ -25,7 +25,7 @@ export default function DashboardPage() {
     );
   }
 
-  const defaultProject = projects[0];
+  const defaultProject = projects.find(p => p.id === 'proj-1');
 
   return (
     <DashboardLayout project={defaultProject}>
