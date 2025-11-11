@@ -2,18 +2,16 @@ import type { ReactNode } from 'react';
 import { Sidebar, SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { SidebarNav } from './sidebar-nav';
 import { Header } from './header';
-import { projects } from '@/lib/data';
+import type { Project } from '@/lib/types';
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
-  const defaultProject = projects[0];
-
+export default function DashboardLayout({ children, project }: { children: ReactNode, project: Project | null | undefined }) {
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
         <SidebarNav />
       </Sidebar>
       <SidebarInset className="bg-background">
-        <Header project={defaultProject} />
+        <Header project={project} />
         <main className="p-4 lg:p-6">{children}</main>
       </SidebarInset>
     </SidebarProvider>
