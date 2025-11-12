@@ -18,8 +18,8 @@ const icebreakers = [
     prompt: 'Planes y precios',
   },
   {
-    title: 'Suggest an idea',
-    prompt: 'What can I build with a web crawler agent?',
+    title: 'Saber más sobre el resto de IA Agents disponibles',
+    prompt: 'IA Agents disponibles',
   },
 ];
 
