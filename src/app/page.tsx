@@ -27,7 +27,12 @@ const icebreakers = [
 export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      id: 'initial-message',
+      id: 'initial-message-1',
+      text: 'Hola!',
+      sender: 'ai',
+    },
+    {
+      id: 'initial-message-2',
       text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia',
       sender: 'ai',
     }
@@ -183,7 +188,7 @@ export default function ChatPage() {
           </div>
         </div>
 
-        {messages.length === 1 && !isLoading && (
+        {messages.length === 2 && !isLoading && (
           <div className="mt-4">
             <div className="grid grid-cols-2 gap-4">
               {icebreakers.map((icebreaker) => (
