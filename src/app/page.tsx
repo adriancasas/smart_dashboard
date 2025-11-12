@@ -9,7 +9,6 @@ import { askChatbot } from '@/ai/flows/chatbot-flow';
 import { type ChatMessage } from '@/ai/flows/chatbot-types';
 import { type MessageData } from 'genkit';
 import { Card, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const icebreakers = [
   {
@@ -38,11 +37,14 @@ export default function ChatPage() {
 
     setIsAiTyping(true);
     setTimeout(() => {
-        setMessages([{ id: 'initial-message-1', text: 'Hola! Todo bien? 👋', sender: 'ai' }]);
+      setMessages([{ id: 'initial-message-1', text: 'Hola! Todo bien? 👋', sender: 'ai' }]);
+      setTimeout(() => {
+        setMessages(prev => [...prev, { id: 'initial-message-2', text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia. Me equivoco?! 😉', sender: 'ai' }]);
         setTimeout(() => {
-            setMessages(prev => [...prev, { id: 'initial-message-2', text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia. Me equivoco?! 😉', sender: 'ai' }]);
+            setMessages(prev => [...prev, { id: 'initial-message-3', text: 'Si es así no perdamos el tiempo. ¿Quieres que empecemos con el análisis en profundidad de tu canal? Estoy aquí para guiarte paso a paso en todo el proceso', sender: 'ai' }]);
             setIsAiTyping(false);
         }, 1500);
+      }, 1500);
     }, 1000);
   }, []);
 
@@ -67,6 +69,7 @@ export default function ChatPage() {
         setInput('');
       }
       setIsLoading(true);
+      setIsAiTyping(true);
 
       try {
         const history: MessageData[] = messages.map(m => ({
@@ -92,6 +95,7 @@ export default function ChatPage() {
         setMessages(prev => [...prev, errorMessage]);
       } finally {
         setIsLoading(false);
+        setIsAiTyping(false);
       }
     }
   };
@@ -135,13 +139,6 @@ export default function ChatPage() {
                   >
                     <p>{message.text}</p>
                   </div>
-                  {message.sender === 'user' && (
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-user"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                      </AvatarFallback>
-                    </Avatar>
-                  )}
                 </div>
               ))}
                {(isLoading || isAiTyping) && (
@@ -181,7 +178,7 @@ export default function ChatPage() {
           </div>
         </div>
 
-        {messages.length === 2 && !isLoading && !isAiTyping && (
+        {messages.length === 3 && !isLoading && !isAiTyping && (
           <div className="mt-4">
             <div className="grid grid-cols-2 gap-4">
               {icebreakers.map((icebreaker) => (
