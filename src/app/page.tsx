@@ -38,9 +38,9 @@ export default function ChatPage() {
 
     setIsAiTyping(true);
     setTimeout(() => {
-        setMessages([{ id: 'initial-message-1', text: 'Hola! Todo bien?', sender: 'ai' }]);
+        setMessages([{ id: 'initial-message-1', text: 'Hola! Todo bien? 👋', sender: 'ai' }]);
         setTimeout(() => {
-            setMessages(prev => [...prev, { id: 'initial-message-2', text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia. Me equivoco?!', sender: 'ai' }]);
+            setMessages(prev => [...prev, { id: 'initial-message-2', text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia. Me equivoco?! 😉', sender: 'ai' }]);
             setIsAiTyping(false);
         }, 1500);
     }, 1000);
