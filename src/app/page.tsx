@@ -118,7 +118,7 @@ export default function Home() {
           Agent Store
         </h1>
         <p className="mt-6 text-lg leading-8 text-muted-foreground">
-          Explore. Select. Take control.
+          Explore. Choose. Control.
         </p>
       </div>
 
