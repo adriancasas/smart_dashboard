@@ -1,14 +1,35 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Send } from 'lucide-react';
+import { Send, Bot, User } from 'lucide-react';
 import { askChatbot } from '@/ai/flows/chatbot-flow';
 import { type ChatMessage } from '@/ai/flows/chatbot-types';
 import { type MessageData } from 'genkit';
+import { Card, CardContent } from '@/components/ui/card';
+
+const icebreakers = [
+    {
+      title: 'Explain a concept',
+      prompt: 'Explain the difference between an agent and a model',
+    },
+    {
+      title: 'Suggest an idea',
+      prompt: 'What can I build with a web crawler agent?',
+    },
+    {
+      title: 'Write a code snippet',
+      prompt: 'Show me how to call an agent in my project',
+    },
+    {
+      title: 'Give me a summary',
+      prompt: 'Summarize the latest trends in AI agents',
+    },
+];
 
 
 export default function ChatPage() {
@@ -16,6 +37,11 @@ export default function ChatPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -23,12 +49,14 @@ export default function ChatPage() {
     }
   }, [messages]);
 
-  const handleSend = async () => {
-    if (input.trim() && !isLoading) {
-      const userMessage: ChatMessage = { id: Date.now().toString(), text: input, sender: 'user' };
+  const handleSend = async (messageText?: string) => {
+    const textToSend = messageText || input;
+    if (textToSend.trim() && !isLoading) {
+      const userMessage: ChatMessage = { id: Date.now().toString(), text: textToSend, sender: 'user' };
       setMessages(prev => [...prev, userMessage]);
-      const currentInput = input;
-      setInput('');
+      if (!messageText) {
+        setInput('');
+      }
       setIsLoading(true);
 
       try {
@@ -37,7 +65,7 @@ export default function ChatPage() {
           content: [{ text: m.text }],
         }));
         
-        const response = await askChatbot({ history, message: currentInput });
+        const response = await askChatbot({ history, message: textToSend });
 
         const aiMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
@@ -69,6 +97,10 @@ export default function ChatPage() {
     }
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-background">
       <div className="flex w-full max-w-4xl flex-col rounded-t-lg border bg-card shadow-lg max-h-[80vh]">
@@ -86,11 +118,11 @@ export default function ChatPage() {
               >
                 {message.sender === 'ai' && (
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback>AI</AvatarFallback>
+                    <AvatarFallback><Bot size={20}/></AvatarFallback>
                   </Avatar>
                 )}
                 <div
-                  className={`max-w-xs rounded-lg p-3 text-sm ${
+                  className={`max-w-md rounded-lg p-3 text-sm ${
                     message.sender === 'user'
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted'
@@ -100,7 +132,7 @@ export default function ChatPage() {
                 </div>
                 {message.sender === 'user' && (
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback>U</AvatarFallback>
+                    <AvatarFallback><User size={20}/></AvatarFallback>
                   </Avatar>
                 )}
               </div>
@@ -108,7 +140,7 @@ export default function ChatPage() {
              {isLoading && (
               <div className="flex items-start gap-3">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback>AI</AvatarFallback>
+                  <AvatarFallback><Bot size={20}/></AvatarFallback>
                 </Avatar>
                 <div className="max-w-xs rounded-lg p-3 text-sm bg-muted">
                   <p>...</p>
@@ -118,6 +150,26 @@ export default function ChatPage() {
             <div ref={scrollAreaRef} />
           </div>
         </ScrollArea>
+        
+        {messages.length === 0 && !isLoading && (
+          <div className="border-t p-4">
+            <div className="grid grid-cols-2 gap-4">
+              {icebreakers.map((icebreaker) => (
+                <Card
+                  key={icebreaker.title}
+                  className="cursor-pointer hover:bg-muted"
+                  onClick={() => handleSend(icebreaker.prompt)}
+                >
+                  <CardContent className="p-4">
+                    <p className="font-semibold text-sm">{icebreaker.title}</p>
+                    <p className="text-sm text-muted-foreground">{icebreaker.prompt}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="border-t p-4 bg-card">
           <div className="relative">
             <Input
@@ -132,7 +184,7 @@ export default function ChatPage() {
               type="submit"
               size="icon"
               className="absolute right-1 top-1/2 -translate-y-1/2"
-              onClick={handleSend}
+              onClick={() => handleSend()}
               disabled={isLoading}
             >
               <Send className="h-4 w-4" />
@@ -144,3 +196,4 @@ export default function ChatPage() {
     </div>
   );
 }
+
