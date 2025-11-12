@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -10,6 +9,7 @@ import { askChatbot } from '@/ai/flows/chatbot-flow';
 import { type ChatMessage } from '@/ai/flows/chatbot-types';
 import { type MessageData } from 'genkit';
 import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const icebreakers = [
   {
@@ -24,34 +24,33 @@ const icebreakers = [
 
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 'initial-message-1',
-      text: 'Hola!',
-      sender: 'ai',
-    },
-    {
-      id: 'initial-message-2',
-      text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia',
-      sender: 'ai',
-    }
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [isAiTyping, setIsAiTyping] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
     inputRef.current?.focus();
+
+    setIsAiTyping(true);
+    setTimeout(() => {
+        setMessages([{ id: 'initial-message-1', text: 'Hola! Todo bien?', sender: 'ai' }]);
+        setTimeout(() => {
+            setMessages(prev => [...prev, { id: 'initial-message-2', text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia. Me equivoco?!', sender: 'ai' }]);
+            setIsAiTyping(false);
+        }, 1500);
+    }, 1000);
   }, []);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [messages]);
+  }, [messages, isAiTyping]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -112,7 +111,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-background">
+    <div className="flex h-screen flex-col items-center justify-center bg-background p-4">
       <div className="w-full max-w-4xl px-4">
         <h1 className="text-3xl font-bold text-center mb-4">
           Welcome to the Agent Store
@@ -145,7 +144,7 @@ export default function ChatPage() {
                   )}
                 </div>
               ))}
-               {isLoading && (
+               {(isLoading || isAiTyping) && (
                 <div className="flex items-start gap-3">
                   <div className="max-w-xs rounded-xl p-3 text-sm bg-muted">
                     <p>...</p>
@@ -165,7 +164,7 @@ export default function ChatPage() {
                 onKeyPress={handleKeyPress}
                 placeholder="Escribe tu mensaje..."
                 className="flex-1"
-                disabled={isLoading}
+                disabled={isLoading || isAiTyping}
               />
               <Button
                 type="submit"
@@ -173,7 +172,7 @@ export default function ChatPage() {
                 variant="ghost"
                 className="rounded-full bg-muted hover:bg-accent"
                 onClick={() => handleSend()}
-                disabled={isLoading}
+                disabled={isLoading || isAiTyping}
               >
                 <ArrowUp className="h-5 w-5" />
                 <span className="sr-only">Enviar</span>
@@ -182,7 +181,7 @@ export default function ChatPage() {
           </div>
         </div>
 
-        {messages.length === 2 && !isLoading && (
+        {messages.length === 2 && !isLoading && !isAiTyping && (
           <div className="mt-4">
             <div className="grid grid-cols-2 gap-4">
               {icebreakers.map((icebreaker) => (
