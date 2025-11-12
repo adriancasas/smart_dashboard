@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -41,7 +40,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-background">
-      <div className="flex h-[90vh] w-full max-w-4xl flex-col rounded-lg border">
+      <div className="flex h-[80vh] w-full max-w-4xl flex-col rounded-lg border">
         <header className="flex items-center justify-between border-b p-4">
           <h1 className="text-xl font-bold">LLM Chat</h1>
         </header>
