@@ -4,6 +4,10 @@ import { Agent } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 const allAgents: Agent[] = [
     {
@@ -78,12 +82,31 @@ const getImage = (avatarId: string) => {
     return PlaceHolderImages.find((img) => img.id === avatarId);
 };
   
+const projects = ['Proyecto Alpha', 'Proyecto Beta'];
 
 export default function DashboardPage() {
   const searchParams = useSearchParams();
+  const { toast } = useToast();
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+
   const agentId = searchParams.get('agentId');
   const agent = allAgents.find((a) => a.id === agentId);
   const avatar = agent ? getImage(agent.avatarId) : null;
+
+  const handleConnect = () => {
+    if (!selectedProject) {
+        toast({
+            title: 'Error',
+            description: 'Por favor, selecciona un proyecto.',
+            variant: 'destructive',
+          });
+      return;
+    }
+    toast({
+      title: '¡Conectado!',
+      description: `El agente ${agent?.name} se ha conectado a ${selectedProject}.`,
+    });
+  };
 
   return (
     <main className="container mx-auto p-4 md:p-8">
@@ -103,8 +126,23 @@ export default function DashboardPage() {
                 <CardDescription>{agent.specialty}</CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="text-center">
-                    <p className="text-muted-foreground">Este agente está listo para ser conectado a un proyecto.</p>
+                <div className="space-y-4">
+                    <p className="text-muted-foreground text-center">Selecciona un proyecto para conectar tu agente.</p>
+                    <Select onValueChange={setSelectedProject}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Seleccionar proyecto" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {projects.map((project) => (
+                                <SelectItem key={project} value={project}>
+                                    {project}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    <Button className='w-full' onClick={handleConnect}>
+                        Conectar a proyecto
+                    </Button>
                 </div>
             </CardContent>
         </Card>
