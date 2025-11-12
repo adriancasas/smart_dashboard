@@ -192,7 +192,6 @@ export default function ChatPage() {
                 >
                   <CardContent className="p-4">
                     <p className="font-semibold text-sm">{icebreaker.title}</p>
-                    <p className="text-sm text-muted-foreground">{icebreaker.prompt}</p>
                   </CardContent>
                 </Card>
               ))}
