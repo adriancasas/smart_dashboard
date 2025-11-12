@@ -128,13 +128,8 @@ export default function ChatPage() {
                     message.sender === 'user' ? 'justify-end' : ''
                   }`}
                 >
-                  {message.sender === 'ai' && (
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback><Bot size={20}/></AvatarFallback>
-                    </Avatar>
-                  )}
                   <div
-                    className={`max-w-md rounded-lg p-3 text-sm ${
+                    className={`max-w-md rounded-xl p-3 text-sm ${
                       message.sender === 'user'
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted'
@@ -154,7 +149,7 @@ export default function ChatPage() {
                   <Avatar className="h-8 w-8">
                     <AvatarFallback><Bot size={20}/></AvatarFallback>
                   </Avatar>
-                  <div className="max-w-xs rounded-lg p-3 text-sm bg-muted">
+                  <div className="max-w-xs rounded-xl p-3 text-sm bg-muted">
                     <p>...</p>
                   </div>
                 </div>
