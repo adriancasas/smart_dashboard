@@ -38,13 +38,19 @@ export default function Chatbot() {
       isUser: false,
     };
     setMessages([welcomeMessage]);
-    setShowGreeting(true);
+    
+    const openGreetingTimer = setTimeout(() => {
+      setShowGreeting(true);
+    }, 1000);
 
-    const timer = setTimeout(() => {
+    const closeGreetingTimer = setTimeout(() => {
       setShowGreeting(false);
-    }, 7000); // Hide greeting after 7 seconds
+    }, 8000); // Hide greeting after 7 seconds (1s delay + 7s visibility)
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(openGreetingTimer);
+      clearTimeout(closeGreetingTimer);
+    }
   }, []);
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -91,7 +97,7 @@ export default function Chatbot() {
             </Button>
           </PopoverTrigger>
           <PopoverContent side="top" className="w-auto mb-2">
-            <p className="text-sm">¡Hola! 👋 ¿Necesitas ayuda?</p>
+            <p className="text-sm">¡Hola! 👋 Estoy aquí para ayudarte</p>
           </PopoverContent>
         </Popover>
       </div>
