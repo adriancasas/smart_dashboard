@@ -26,7 +26,7 @@ export default function ChatPage() {
     setTimeout(() => {
       setMessages([{ id: 'initial-message-1', text: 'Hola! Todo bien? 👋', sender: 'ai' }]);
       setTimeout(() => {
-        setMessages(prev => [...prev, { id: 'initial-message-2', text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia. Me equivoco?! 😉', sender: 'ai' }]);
+        setMessages(prev => [...prev, { id: 'initial-message-2', text: 'Supongo que ya has probado el Youtuber Opt y quieres más potencia. Me equivoco? 😉', sender: 'ai' }]);
         setTimeout(() => {
             setMessages(prev => [...prev, { id: 'initial-message-3', text: 'Si es así no perdamos el tiempo. ¿Quieres que empecemos con el análisis en profundidad de tu canal? Estoy aquí para guiarte paso a paso en todo el proceso', sender: 'ai' }]);
             setTimeout(() => {
