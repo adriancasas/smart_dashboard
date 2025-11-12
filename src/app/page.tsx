@@ -21,19 +21,17 @@ const icebreakers = [
       title: 'Suggest an idea',
       prompt: 'What can I build with a web crawler agent?',
     },
-    {
-      title: 'Write a code snippet',
-      prompt: 'Show me how to call an agent in my project',
-    },
-    {
-      title: 'Give me a summary',
-      prompt: 'Summarize the latest trends in AI agents',
-    },
 ];
 
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 'initial-message',
+      text: 'Hola! Cómo puedo ayudarte?',
+      sender: 'ai',
+    }
+  ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -111,10 +109,10 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-background">
+      <h1 className="text-3xl font-bold text-center mb-4">
+        Welcome to the Agent Store
+      </h1>
       <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-4">
-          Welcome to the Agent Store
-        </h1>
         <div className="flex flex-col rounded-lg border bg-card shadow-lg max-h-[80vh]">
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-4">
@@ -185,7 +183,7 @@ export default function ChatPage() {
           </div>
         </div>
 
-        {messages.length === 0 && !isLoading && (
+        {messages.length === 1 && !isLoading && (
           <div className="mt-4">
             <div className="grid grid-cols-2 gap-4">
               {icebreakers.map((icebreaker) => (
