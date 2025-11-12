@@ -23,6 +23,7 @@ import { Agent } from '@/lib/types';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { Separator } from './ui/separator';
 
 interface AgentDetailsDialogProps {
   agent: Agent;
@@ -69,6 +70,16 @@ export default function AgentDetailsDialog({
     }
   }
 
+  const handleCreateProject = () => {
+    // Aquí iría la lógica para crear un nuevo proyecto.
+    // Por ahora, simplemente cerramos el diálogo.
+    toast({
+      title: 'Próximamente',
+      description: 'La funcionalidad para crear proyectos estará disponible pronto.',
+    });
+    onClose();
+  }
+
   const descriptionPoints = agent.longDescription.split(';').filter(p => p.trim() !== '');
 
   return (
@@ -95,35 +106,51 @@ export default function AgentDetailsDialog({
               ))}
             </ul>
         </div>
+        
+        <Separator className="my-4" />
 
-        <div className="grid grid-cols-1 items-center gap-4">
-          <Select 
-            onValueChange={handleSelectChange} 
-            value={selectedProject}
-            disabled={!hasProjects}
-          >
-            <SelectTrigger className={cn(showValidation && 'ring-2 ring-destructive')}>
-              <SelectValue 
-                placeholder={
-                  hasProjects 
-                    ? (showValidation ? "Selecciona primero un proyecto, por favor" : "Selecciona un proyecto")
-                    : "No tienes proyectos creados"
-                } 
-              />
-            </SelectTrigger>
-            <SelectContent>
-              {projects.map((project) => (
-                 <SelectItem key={project} value={project}>{project}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
-            Cancelar
-          </Button>
-          <Button onClick={handleConfirm} disabled={!hasProjects}>Confirmar Conexión</Button>
-        </DialogFooter>
+        {hasProjects ? (
+          <>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <p className="text-sm text-center text-muted-foreground">Selecciona un proyecto para conectar el agente.</p>
+              <Select 
+                onValueChange={handleSelectChange} 
+                value={selectedProject}
+              >
+                <SelectTrigger className={cn(showValidation && 'ring-2 ring-destructive')}>
+                  <SelectValue 
+                    placeholder={
+                      showValidation ? "Selecciona primero un proyecto, por favor" : "Selecciona un proyecto"
+                    } 
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {projects.map((project) => (
+                     <SelectItem key={project} value={project}>{project}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={onClose}>
+                Cancelar
+              </Button>
+              <Button onClick={handleConfirm}>Confirmar Conexión</Button>
+            </DialogFooter>
+          </>
+        ) : (
+          <>
+            <div className="text-center space-y-4">
+               <p className="text-sm text-muted-foreground">Para conectar este agente, primero necesitas crear un proyecto.</p>
+               <Button onClick={handleCreateProject}>Crear mi primer proyecto</Button>
+            </div>
+            <DialogFooter>
+               <Button variant="outline" onClick={onClose} className="w-full">
+                Volver
+              </Button>
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
