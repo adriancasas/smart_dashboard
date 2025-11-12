@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Chatbot from '@/components/chatbot';
 
 const agents = [
   {
@@ -34,30 +35,6 @@ const agents = [
     name: 'Code Generator',
     specialty: 'Genera fragmentos de código en múltiples lenguajes de programación.',
     avatarId: 'agent4',
-  },
-  {
-    id: '5',
-    name: 'Support Bot',
-    specialty: 'Proporciona respuestas y soluciones a preguntas frecuentes.',
-    avatarId: 'agent5',
-  },
-  {
-    id: '6',
-    name: 'Marketplace Analyzer',
-    specialty: 'Analiza tendencias de mercado y precios de productos.',
-    avatarId: 'agent6',
-  },
-  {
-    id: '7',
-    name: 'Image Generator',
-    specialty: 'Crea imágenes a partir de descripciones textuales.',
-    avatarId: 'agent7',
-  },
-  {
-    id: '8',
-    name: 'Social Media Manager',
-    specialty: 'Automatiza la publicación y análisis de redes sociales.',
-    avatarId: 'agent8',
   },
 ];
 
@@ -103,12 +80,13 @@ export default function Home() {
                 </CardDescription>
               </CardContent>
               <CardFooter className="p-0 mt-4">
-                <Button className="w-full">Conectar</Button>
+                <Button className="w-full">Conectar a proyecto</Button>
               </CardFooter>
             </Card>
           );
         })}
       </div>
+      <Chatbot />
     </main>
   );
 }
