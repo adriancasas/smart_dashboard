@@ -13,6 +13,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { FileText, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useParams } from 'next/navigation';
 
 
 const agentsData = [
@@ -43,11 +44,8 @@ const agentsData = [
   // Add other agents here
 ];
 
-export default function AgentDetailPage({
-  params,
-}: {
-  params: { agentId: string };
-}) {
+export default function AgentDetailPage() {
+  const params = useParams();
   const agent = agentsData.find((a) => a.id === params.agentId);
   const [checkedTasks, setCheckedTasks] = useState<Record<string, boolean>>({});
 
@@ -83,7 +81,7 @@ export default function AgentDetailPage({
                 <div className="flex items-center space-x-3">
                   <Checkbox
                     id={task.id}
-                    checked={checkedTasks[task.id]}
+                    checked={!!checkedTasks[task.id]}
                     onCheckedChange={(checked) =>
                       handleCheckedChange(task.id, !!checked)
                     }
@@ -120,7 +118,7 @@ export default function AgentDetailPage({
                 <div className="flex items-center space-x-3">
                   <Checkbox
                     id={`completed-${task.id}`}
-                    checked={checkedTasks[task.id]}
+                    checked={!!checkedTasks[task.id]}
                     onCheckedChange={(checked) =>
                       handleCheckedChange(task.id, !!checked)
                     }
