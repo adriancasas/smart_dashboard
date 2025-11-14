@@ -10,11 +10,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarInset,
 } from '@/components/ui/sidebar';
-import { Home, Folder, PlusCircle } from 'lucide-react';
+import { Home } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardLayout({
@@ -37,32 +34,6 @@ export default function DashboardLayout({
                 <Link href="/dashboard">
                   <Home />
                   <span>Home</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-
-          <SidebarGroup>
-            <SidebarGroupLabel>Proyectos</SidebarGroupLabel>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Proyecto Alpha">
-                  <Link href="#">
-                    <Folder />
-                    <span>Proyecto Alpha</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarContent className="!flex-initial">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Crear Nuevo Proyecto">
-                <Link href="#">
-                  <PlusCircle />
-                  <span>Crear Nuevo Proyecto</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
