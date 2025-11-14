@@ -7,9 +7,6 @@ export default function DashboardPage() {
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
             Dashboard 360
           </h1>
-          <p className="mt-6 text-lg leading-8 text-muted-foreground">
-            Bienvenido a la vista para equipos y empresas.
-          </p>
         </div>
     </main>
   );
