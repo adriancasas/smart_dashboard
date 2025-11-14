@@ -44,7 +44,6 @@ export function AgentList({
 
   useEffect(() => {
     const handleScroll = () => {
-      // Load more agents when user is 100px from the bottom
       if (
         window.innerHeight + document.documentElement.scrollTop >=
           document.documentElement.offsetHeight - 100 &&
