@@ -1,6 +1,4 @@
-
-import Link from 'next/link';
-import { AgentCard } from './components/AgentCard';
+import { AgentList } from './components/AgentList';
 import { Separator } from '@/components/ui/separator';
 
 const activeAgents = [
@@ -42,37 +40,10 @@ export default function DashboardPage() {
         <h2 className="text-2xl font-semibold tracking-tight mb-4">
           Tus Agentes
         </h2>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {activeAgents.map((agent) => (
-            <Link href={`/dashboard/agent/${agent.id}`} key={agent.id}>
-              <AgentCard
-                name={agent.name}
-                description={agent.description}
-                avatarUrl={agent.avatar}
-                status={agent.status}
-              />
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      <Separator />
-
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight mb-4">
-          Agentes Sugeridos
-        </h2>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {suggestedAgents.map((agent) => (
-            <Link href={`/dashboard/agent/${agent.id}`} key={agent.id}>
-              <AgentCard
-                name={agent.name}
-                description={agent.description}
-                avatarUrl={agent.avatar}
-              />
-            </Link>
-          ))}
-        </div>
+        <AgentList
+          initialActiveAgents={activeAgents}
+          initialSuggestedAgents={suggestedAgents}
+        />
       </div>
     </div>
   );
