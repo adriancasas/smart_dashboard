@@ -9,14 +9,14 @@ const activeAgents = [
     description: 'Extracts and analyzes data from various sources.',
     avatar: '/avatars/agent1.png',
     id: '1',
-    status: 'Active',
+    status: 'Active' as const,
   },
   {
     name: 'Web Crawler',
     description: 'Crawls websites to gather specific information.',
     avatar: '/avatars/agent2.png',
     id: '2',
-    status: 'Reactivate',
+    status: 'Reactivate' as const,
   },
 ];
 
@@ -37,7 +37,7 @@ const suggestedAgents = [
 
 export default function DashboardPage() {
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
+    <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-semibold tracking-tight mb-4">
           Tus Agentes
