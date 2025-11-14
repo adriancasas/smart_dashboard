@@ -1,5 +1,6 @@
-import { AgentList } from './components/AgentList';
+import { AgentCard } from './components/AgentCard';
 import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
 
 const activeAgents = [
   {
@@ -31,6 +32,18 @@ const suggestedAgents = [
     avatar: '/avatars/agent4.png',
     id: '4',
   },
+    {
+    name: 'Support Bot',
+    description: 'Provides automated customer support.',
+    avatar: '/avatars/agent5.png',
+    id: '5',
+  },
+  {
+    name: 'Marketplace Analyzer',
+    description: 'Analyzes marketplace trends and data.',
+    avatar: '/avatars/agent6.png',
+    id: '6',
+  },
 ];
 
 export default function DashboardPage() {
@@ -40,10 +53,37 @@ export default function DashboardPage() {
         <h2 className="text-2xl font-semibold tracking-tight mb-4">
           Tus Agentes
         </h2>
-        <AgentList
-          initialActiveAgents={activeAgents}
-          initialSuggestedAgents={suggestedAgents}
-        />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {activeAgents.map((agent) => (
+            <Link href={`/dashboard/agent/${agent.id}`} key={agent.id}>
+              <AgentCard
+                name={agent.name}
+                description={agent.description}
+                avatarUrl={agent.avatar}
+                status={agent.status}
+              />
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <Separator />
+
+      <div>
+        <h2 className="text-2xl font-semibold tracking-tight mb-4">
+          Agentes Sugeridos
+        </h2>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {suggestedAgents.map((agent) => (
+            <Link href={`/dashboard/agent/${agent.id}`} key={agent.id}>
+              <AgentCard
+                name={agent.name}
+                description={agent.description}
+                avatarUrl={agent.avatar}
+              />
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
