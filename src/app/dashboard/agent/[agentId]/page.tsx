@@ -1,4 +1,7 @@
 
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -8,8 +11,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { FileText, CheckCircle, Play } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import { FileText, Play } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
 
 const agentsData = [
   {
@@ -45,6 +49,11 @@ export default function AgentDetailPage({
   params: { agentId: string };
 }) {
   const agent = agentsData.find((a) => a.id === params.agentId);
+  const [checkedTasks, setCheckedTasks] = useState<Record<string, boolean>>({});
+
+  const handleCheckedChange = (taskId: string, checked: boolean) => {
+    setCheckedTasks((prev) => ({ ...prev, [taskId]: checked }));
+  };
 
   if (!agent) {
     return <div>Agent not found</div>;
@@ -93,7 +102,7 @@ export default function AgentDetailPage({
           <CardHeader>
             <CardTitle>Tareas Terminadas</CardTitle>
             <CardDescription>
-              Revisa el output de las tareas completadas.
+              Revisa el output de las tareas completadas y márcalas como revisadas.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -103,12 +112,24 @@ export default function AgentDetailPage({
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center space-x-3">
-                  <CheckCircle className="h-5 w-5 text-accent" />
-                  <span
-                    className="text-sm font-medium text-muted-foreground"
+                  <Checkbox
+                    id={`completed-${task.id}`}
+                    checked={checkedTasks[task.id]}
+                    onCheckedChange={(checked) =>
+                      handleCheckedChange(task.id, !!checked)
+                    }
+                  />
+                  <label
+                    htmlFor={`completed-${task.id}`}
+                    className={cn(
+                      'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
+                      checkedTasks[task.id]
+                        ? 'line-through text-muted-foreground'
+                        : 'text-foreground'
+                    )}
                   >
                     {task.label}
-                  </span>
+                  </label>
                 </div>
                 <Button variant="outline" size="sm" asChild>
                   <a href={task.fileUrl} target="_blank">
