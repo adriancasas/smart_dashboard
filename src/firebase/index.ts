@@ -10,19 +10,6 @@ export function initializeFirebase() {
     return getSdks(getApp());
   }
 
-  // This configuration is used for client-side initialization of Firebase.
-  // It is public and does not contain any sensitive information.
-  // Security is enforced by Firebase Security Rules.
-  const firebaseConfig = {
-    // apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    // authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    // projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    // storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    // messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    // appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-    // measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-  };
-
   // In a production environment with Firebase App Hosting, the config
   // is often provided automatically. We prioritize that but fall back
   // to the environment variables for local development.
