@@ -34,6 +34,10 @@
     --ring: 220 70% 31%;
 
     --radius: 0.5rem;
+
+    --header-height: 4rem;
+    --sidebar-width: 16rem;
+    --sidebar-collapsed-width: 4rem;
   }
 
   .dark {
