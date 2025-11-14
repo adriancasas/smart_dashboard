@@ -20,7 +20,7 @@ import {
   BotMessageSquare,
   PanelLeftClose,
   PanelRightClose,
-  Coin,
+  Coins,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './components/Header';
@@ -39,7 +39,7 @@ function CreditCounter() {
         )}
       >
         <div className="flex items-center gap-2">
-          <Coin className="size-5 shrink-0" />
+          <Coins className="size-5 shrink-0" />
           {isOpen && <span className="text-sm font-medium">1500 Créditos</span>}
         </div>
       </div>
