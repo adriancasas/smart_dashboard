@@ -3,7 +3,12 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Button, type ButtonProps } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Sheet,
@@ -51,11 +56,11 @@ export function Sidebar({
   children,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const { isOpen, isMobile } = useSidebar();
+  const { isOpen, isMobile, setIsOpen } = useSidebar();
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={(open) => useSidebar().setIsOpen(open)}>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent side="left" className="w-[var(--sidebar-width)] p-0">
           <div className="flex h-full flex-col">{children}</div>
         </SheetContent>
@@ -67,7 +72,9 @@ export function Sidebar({
     <aside
       className={cn(
         'fixed left-0 top-0 z-40 flex h-screen flex-col border-r bg-background transition-all',
-        isOpen ? 'w-[var(--sidebar-width)]' : 'w-[var(--sidebar-collapsed-width)]',
+        isOpen
+          ? 'w-[var(--sidebar-width)]'
+          : 'w-[var(--sidebar-collapsed-width)]',
         className
       )}
       {...props}
@@ -198,14 +205,14 @@ export function SidebarInset({
 export function SidebarTrigger({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const { isOpen, isMobile, setIsOpen } = useSidebar();
+}: ButtonProps) {
+  const { isMobile } = useSidebar();
   if (!isMobile) {
     return null;
   }
   return (
     <SheetTrigger asChild>
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" {...props}>
         <Menu />
       </Button>
     </SheetTrigger>
