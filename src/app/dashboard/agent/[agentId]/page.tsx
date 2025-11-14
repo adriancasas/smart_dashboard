@@ -81,8 +81,8 @@ export default function AgentDetailPage({
                   </label>
                 </div>
                 <Button variant="ghost" size="sm">
-                  <span>Start</span>
                   <Play />
+                  <span>Start</span>
                 </Button>
               </div>
             ))}
