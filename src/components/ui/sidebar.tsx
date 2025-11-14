@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -10,13 +11,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useIsMobile } from '@/hooks/use-mobile';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTrigger,
-} from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
 
 interface SidebarContextProps {
   isOpen: boolean;
@@ -40,10 +34,6 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = React.useState(!isMobile);
 
-  React.useEffect(() => {
-    setIsOpen(!isMobile);
-  }, [isMobile]);
-
   return (
     <SidebarContext.Provider value={{ isOpen, setIsOpen, isMobile }}>
       {children}
@@ -56,17 +46,7 @@ export function Sidebar({
   children,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  const { isOpen, isMobile, setIsOpen } = useSidebar();
-
-  if (isMobile) {
-    return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetContent side="left" className="w-[var(--sidebar-width)] p-0">
-          <div className="flex h-full flex-col">{children}</div>
-        </SheetContent>
-      </Sheet>
-    );
-  }
+  const { isOpen } = useSidebar();
 
   return (
     <aside
@@ -176,45 +156,5 @@ export function SidebarMenuButton({
     >
       {children}
     </Button>
-  );
-}
-
-export function SidebarInset({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const { isOpen, isMobile } = useSidebar();
-
-  if (isMobile) {
-    return <main {...props} />;
-  }
-  return (
-    <main
-      className={cn(
-        'transition-all',
-        isOpen
-          ? 'ml-[var(--sidebar-width)]'
-          : 'ml-[var(--sidebar-collapsed-width)]',
-        className
-      )}
-      {...props}
-    />
-  );
-}
-
-export function SidebarTrigger({
-  className,
-  ...props
-}: ButtonProps) {
-  const { isMobile } = useSidebar();
-  if (!isMobile) {
-    return null;
-  }
-  return (
-    <SheetTrigger asChild>
-      <Button variant="ghost" size="icon" {...props}>
-        <Menu />
-      </Button>
-    </SheetTrigger>
   );
 }

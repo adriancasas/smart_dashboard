@@ -3,13 +3,12 @@
 
 import {
   SidebarProvider,
-  Sidebar,
+  Sidebar as SidebarContainer,
   SidebarHeader,
   SidebarContent,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarInset,
   useSidebar,
 } from '@/components/ui/sidebar';
 import {
@@ -21,12 +20,20 @@ import {
   PanelLeftClose,
   PanelRightClose,
   Coins,
+  Menu,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './components/Header';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { useEffect } from 'react';
 
 function CreditCounter() {
   const { isOpen } = useSidebar();
@@ -63,77 +70,134 @@ function CollapseToggle() {
   );
 }
 
+function SidebarItems() {
+  const pathname = usePathname();
+  return (
+    <>
+      <SidebarHeader>
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2 font-semibold"
+        >
+          <BotMessageSquare className="h-6 w-6" />
+          <span>Agent Hub</span>
+        </Link>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarMenu className="space-y-4">
+          <CreditCounter />
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <Link href="/dashboard" passHref>
+                <SidebarMenuButton
+                  className={cn(
+                    pathname === '/dashboard' &&
+                      'bg-accent text-accent-foreground'
+                  )}
+                  tooltip={{ children: 'Dashboard' }}
+                >
+                  <Home />
+                  <span>Dashboard</span>
+                </SidebarMenuButton>
+              </Link>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip={{ children: 'Products' }}>
+                <Package />
+                <span>Products</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip={{ children: 'Customers' }}>
+                <Users />
+                <span>Customers</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip={{ children: 'Analytics' }}>
+                <LineChart />
+                <span>Analytics</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarMenu>
+      </SidebarContent>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <CollapseToggle />
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </>
+  );
+}
+
+function DashboardMobileLayout({ children }: { children: React.ReactNode }) {
+  const { isOpen, setIsOpen } = useSidebar();
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <Header>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Menu />
+            </Button>
+          </SheetTrigger>
+        </Header>
+        <main className="flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+          {children}
+        </main>
+      </div>
+      <SheetContent side="left" className="w-[var(--sidebar-width)] p-0">
+        <SidebarItems />
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function DashboardDesktopLayout({ children }: { children: React.ReactNode }) {
+  const { isOpen } = useSidebar();
+  return (
+    <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <SidebarContainer>
+        <SidebarItems />
+      </SidebarContainer>
+      <main
+        className={cn(
+          'flex flex-col items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 transition-all',
+          isOpen
+            ? 'ml-[var(--sidebar-width)]'
+            : 'ml-[var(--sidebar-collapsed-width)]'
+        )}
+      >
+        <Header />
+        <div className="w-full">{children}</div>
+      </main>
+    </div>
+  );
+}
+
+function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
+  const isMobile = useIsMobile();
+  const { setIsOpen } = useSidebar();
+
+  useEffect(() => {
+    setIsOpen(!isMobile);
+  }, [isMobile, setIsOpen]);
+
+  if (isMobile) {
+    return <DashboardMobileLayout>{children}</DashboardMobileLayout>;
+  }
+  return <DashboardDesktopLayout>{children}</DashboardDesktopLayout>;
+}
+
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full flex-col bg-muted/40">
-        <Sidebar>
-          <SidebarHeader>
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-2 font-semibold"
-            >
-              <BotMessageSquare className="h-6 w-6" />
-              <span>Agent Hub</span>
-            </Link>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarMenu className='space-y-4'>
-              <CreditCounter />
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <Link href="/dashboard" passHref>
-                    <SidebarMenuButton
-                      className={cn(
-                        pathname === '/dashboard' &&
-                          'bg-accent text-accent-foreground'
-                      )}
-                      tooltip={{ children: 'Dashboard' }}
-                    >
-                      <Home />
-                      <span>Dashboard</span>
-                    </SidebarMenuButton>
-                  </Link>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton tooltip={{ children: 'Products' }}>
-                    <Package />
-                    <span>Products</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton tooltip={{ children: 'Customers' }}>
-                    <Users />
-                    <span>Customers</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton tooltip={{ children: 'Analytics' }}>
-                    <LineChart />
-                    <span>Analytics</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarMenu>
-          </SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <CollapseToggle />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </Sidebar>
-        <SidebarInset>
-          <Header />
-          <main className="flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-            {children}
-          </main>
-        </SidebarInset>
-      </div>
+      <DashboardLayoutContent>{children}</DashboardLayoutContent>
     </SidebarProvider>
   );
 }
