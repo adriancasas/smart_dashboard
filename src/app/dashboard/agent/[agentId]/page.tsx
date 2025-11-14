@@ -81,7 +81,13 @@ export default function AgentDetailPage({
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center space-x-3">
-                  <Checkbox id={task.id} />
+                  <Checkbox
+                    id={task.id}
+                    checked={checkedTasks[task.id]}
+                    onCheckedChange={(checked) =>
+                      handleCheckedChange(task.id, !!checked)
+                    }
+                  />
                   <label
                     htmlFor={task.id}
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
