@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { FileText, CheckCircle } from 'lucide-react';
+import { FileText, CheckCircle, Play } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const agentsData = [
@@ -67,14 +67,23 @@ export default function AgentDetailPage({
           </CardHeader>
           <CardContent className="space-y-4">
             {agent.tasks.pending.map((task) => (
-              <div key={task.id} className="flex items-center space-x-3">
-                <Checkbox id={task.id} />
-                <label
-                  htmlFor={task.id}
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  {task.label}
-                </label>
+              <div
+                key={task.id}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <Checkbox id={task.id} />
+                  <label
+                    htmlFor={task.id}
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    {task.label}
+                  </label>
+                </div>
+                <Button variant="ghost" size="icon">
+                  <Play className="h-4 w-4" />
+                  <span className="sr-only">Run Task</span>
+                </Button>
               </div>
             ))}
           </CardContent>
