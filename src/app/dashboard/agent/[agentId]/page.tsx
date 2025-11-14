@@ -80,9 +80,9 @@ export default function AgentDetailPage({
                     {task.label}
                   </label>
                 </div>
-                <Button variant="ghost" size="icon">
-                  <Play className="h-4 w-4" />
-                  <span className="sr-only">Run Task</span>
+                <Button variant="ghost" size="sm">
+                  <span>Start</span>
+                  <Play />
                 </Button>
               </div>
             ))}
