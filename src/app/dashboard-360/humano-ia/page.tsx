@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -17,7 +18,7 @@ import {
 } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Circle } from 'lucide-react';
+import { CheckCircle, Circle, FileText } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Separator } from '@/components/ui/separator';
 
@@ -174,18 +175,28 @@ export default function HumanoIaPage() {
                 </DialogHeader>
                 <div className="py-4">
                     <div className="space-y-4">
-                        {selectedTeam.tasks.map(task => (
-                            <div key={task.id} className="flex items-center gap-4 rounded-md border p-4">
+                        {selectedTeam.tasks.map(task => {
+                          const isClickable = task.completed;
+                          const TaskWrapper = isClickable ? 'button' : 'div';
+                          
+                          return (
+                            <TaskWrapper 
+                              key={task.id} 
+                              className={`flex w-full items-center gap-4 rounded-md border p-4 text-left transition-colors ${isClickable ? 'cursor-pointer hover:bg-muted/50' : ''}`}
+                              onClick={() => isClickable && alert(`Visualizando el output de: "${task.description}"`)}
+                            >
                                 {task.completed ? (
-                                    <CheckCircle className="h-6 w-6 text-green-500" />
+                                    <CheckCircle className="h-6 w-6 flex-shrink-0 text-green-500" />
                                 ) : (
-                                    <Circle className="h-6 w-6 text-muted-foreground" />
+                                    <Circle className="h-6 w-6 flex-shrink-0 text-muted-foreground" />
                                 )}
-                                <span className={`flex-1 ${task.completed ? 'text-muted-foreground line-through' : 'text-foreground'}`}>
+                                <span className={`flex-1 ${task.completed ? 'text-muted-foreground' : 'text-foreground'}`}>
                                     {task.description}
                                 </span>
-                            </div>
-                        ))}
+                                {task.completed && <FileText className="h-5 w-5 flex-shrink-0 text-muted-foreground" />}
+                            </TaskWrapper>
+                          );
+                        })}
                     </div>
                 </div>
             </DialogContent>
@@ -194,3 +205,5 @@ export default function HumanoIaPage() {
     </main>
   );
 }
+
+    
